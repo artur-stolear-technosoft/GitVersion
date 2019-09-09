@@ -7,20 +7,11 @@ namespace GitVersion
 {
     public class Arguments
     {
-        public Arguments()
-        {
-            Authentication = new Authentication();
-            OverrideConfig = new Config();
-            Output = OutputType.Json;
-            UpdateAssemblyInfoFileName = new HashSet<string>();
-            Verbosity = VerbosityLevel.Info;
-        }
+        public Authentication Authentication = new Authentication();
 
-        public Authentication Authentication;
-
-        public Config OverrideConfig;
-        public bool HasOverrideConfig { get; set; }
-        public ConfigFileLocator ConfigFileLocator { get; set; } = ConfigFileLocator.GetLocator();
+        public Config OverrideConfig = new Config();
+        public bool HasOverrideConfig;
+        public ConfigFileLocator ConfigFileLocator = ConfigFileLocator.GetLocator();
 
         public string TargetPath;
 
@@ -36,7 +27,7 @@ namespace GitVersion
         public string LogFilePath;
         public string ShowVariable;
 
-        public OutputType Output;
+        public OutputType Output = OutputType.Json;
 
         public string Proj;
         public string ProjArgs;
@@ -44,7 +35,7 @@ namespace GitVersion
         public string ExecArgs;
 
         public bool UpdateAssemblyInfo;
-        public ISet<string> UpdateAssemblyInfoFileName;
+        public ISet<string> UpdateAssemblyInfoFileName = new HashSet<string>();
         public bool EnsureAssemblyInfo;
 
         public bool UpdateWixVersionFile;
@@ -54,7 +45,7 @@ namespace GitVersion
         public bool NoCache;
         public bool NoNormalize;
 
-        public VerbosityLevel Verbosity;
+        public VerbosityLevel Verbosity = VerbosityLevel.Info;
 
         public void AddAssemblyInfoFileName(string fileName)
         {

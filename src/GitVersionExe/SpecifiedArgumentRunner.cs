@@ -122,10 +122,11 @@ namespace GitVersion
         {
             if (string.IsNullOrEmpty(args.Proj)) return false;
 
-            Logger.WriteInfo($"Launching build tool {BuildTool} \"{args.Proj}\" {args.ProjArgs}");
+            var arguments = $"\"{args.Proj}\" {args.ProjArgs}";
+            Logger.WriteInfo($"Launching build tool {BuildTool} {arguments}");
             var results = ProcessHelper.Run(
                 Logger.WriteInfo, Logger.WriteError,
-                null, BuildTool, $"\"{args.Proj}\" {args.ProjArgs}", workingDirectory,
+                null, BuildTool, arguments, workingDirectory,
                 GetEnvironmentalVariables(variables));
 
             if (results != 0)
@@ -149,7 +150,8 @@ namespace GitVersion
 
             return true;
         }
-        static KeyValuePair<string, string>[] GetEnvironmentalVariables(VersionVariables variables)
+
+        private static KeyValuePair<string, string>[] GetEnvironmentalVariables(VersionVariables variables)
         {
             return variables
                 .Select(v => new KeyValuePair<string, string>("GitVersion_" + v.Key, v.Value))

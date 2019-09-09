@@ -1,11 +1,14 @@
 using GitVersion.Helpers;
 using System;
 using System.Collections.Generic;
+using System.CommandLine;
+using System.CommandLine.Invocation;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 using GitVersion.Configuration;
 using GitVersion.Exceptions;
 using GitVersion.OutputFormatters;
@@ -18,9 +21,25 @@ namespace GitVersion
     {
         static StringBuilder log = new StringBuilder();
 
-        static void Main()
+        public static async Task<int> Main(string[] args)
         {
-            var exitCode = VerifyArgumentsAndRun();
+            var rootCommand = new RootCommand
+            {
+                new Option(
+                    "--int-option",
+                    "An option whose argument is parsed as an int")
+                {
+                    Argument = new Argument<int>(defaultValue: () => 42)
+                }
+            };
+
+            rootCommand.Description = "My sample app";
+            rootCommand.Handler = CommandHandler.Create<int>((intOption) =>
+            {
+                Console.WriteLine($"The value for --int-option is: {intOption}");
+            });
+
+            var exitCode = await rootCommand.InvokeAsync(args);
 
             if (Debugger.IsAttached)
             {
@@ -34,6 +53,21 @@ namespace GitVersion
             }
 
             System.Environment.Exit(exitCode);
+            return exitCode;
+            //var exitCode = VerifyArgumentsAndRun();
+
+            //if (Debugger.IsAttached)
+            //{
+            //    Console.ReadKey();
+            //}
+
+            //if (exitCode != 0)
+            //{
+            //    // Dump log to console if we fail to complete successfully
+            //    Console.Write(log.ToString());
+            //}
+
+            //Environment.Exit(exitCode);
         }
 
         static int VerifyArgumentsAndRun()

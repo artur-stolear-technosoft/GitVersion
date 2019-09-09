@@ -28,6 +28,10 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="System.CommandLine.Experimental" Version="0.3.0-alpha.19405.1" />
+    </ItemGroup>
+
+    <ItemGroup>
         <ProjectReference Include="..\GitVersionCore\GitVersionCore.csproj" />
     </ItemGroup>
 </Project>
